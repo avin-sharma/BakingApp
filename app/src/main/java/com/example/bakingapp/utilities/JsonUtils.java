@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class JsonUtils {
     public static Recipe[] convertJsonStringToRecipes(String json) {
-        Recipe[] recipes;
+        Recipe[] recipes = null;
         try {
             JSONArray jsonRecipes = new JSONArray(json);
             recipes = new Recipe[jsonRecipes.length()];
@@ -20,7 +20,7 @@ public class JsonUtils {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        return recipes;
     }
 
     private static Recipe convertJsonToRecipe(JSONObject jsonRecipe) throws JSONException {
@@ -36,11 +36,31 @@ public class JsonUtils {
         return new Recipe(id, name, ingredients, steps, servings, image);
     }
 
-    private static Ingredient[] convertJsonToIngredients(JSONArray ingredientsJsonArray) {
-        
+    private static Ingredient[] convertJsonToIngredients(JSONArray ingredientsJsonArray) throws JSONException {
+        Ingredient[] ingredients = new Ingredient[ingredientsJsonArray.length()];
+
+        for (int i = 0; i < ingredientsJsonArray.length(); i++) {
+            JSONObject ingredientJsonObject = ingredientsJsonArray.getJSONObject(i);
+            int quantity = ingredientJsonObject.getInt("quantity");
+            String measure = ingredientJsonObject.getString("measure");
+            String ingredient = ingredientJsonObject.getString("ingredient");
+            ingredients[i] = new Ingredient(quantity, measure, ingredient);
+        }
+        return ingredients;
     }
 
-    private static Step[] convertJsonToSteps(JSONArray stepsJsonArray) {
+    private static Step[] convertJsonToSteps(JSONArray stepsJsonArray) throws JSONException {
+        Step[] steps = new Step[stepsJsonArray.length()];
 
+        for (int i = 0; i < stepsJsonArray.length(); i++) {
+            JSONObject stepJsonObject = stepsJsonArray.getJSONObject(i);
+            int id = stepJsonObject.getInt("id");
+            String shortDescription = stepJsonObject.getString("stepDescription");
+            String description = stepJsonObject.getString("description");
+            String videoURL = stepJsonObject.getString("videoURL");
+            String thumbnailURL = stepJsonObject.getString("thumbnailURL");
+            steps[i] = new Step(id, shortDescription, description, videoURL, thumbnailURL);
+        }
+        return steps;
     }
 }
