@@ -32,5 +32,6 @@ dependencies {
 
     // For network calls
     implementation("com.squareup.okhttp3:okhttp:4.7.1")
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
 }

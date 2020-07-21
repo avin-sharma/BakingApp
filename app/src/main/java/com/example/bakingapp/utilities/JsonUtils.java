@@ -1,5 +1,7 @@
 package com.example.bakingapp.utilities;
 
+import android.util.Log;
+
 import com.example.bakingapp.models.Ingredient;
 import com.example.bakingapp.models.Recipe;
 import com.example.bakingapp.models.Step;
@@ -55,7 +57,7 @@ public class JsonUtils {
         for (int i = 0; i < stepsJsonArray.length(); i++) {
             JSONObject stepJsonObject = stepsJsonArray.getJSONObject(i);
             int id = stepJsonObject.getInt("id");
-            String shortDescription = stepJsonObject.getString("stepDescription");
+            String shortDescription = stepJsonObject.getString("shortDescription");
             String description = stepJsonObject.getString("description");
             String videoURL = stepJsonObject.getString("videoURL");
             String thumbnailURL = stepJsonObject.getString("thumbnailURL");

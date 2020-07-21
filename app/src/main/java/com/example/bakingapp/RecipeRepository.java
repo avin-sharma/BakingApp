@@ -8,7 +8,8 @@ import com.example.bakingapp.utilities.JsonUtils;
 import com.example.bakingapp.utilities.NetworkUtils;
 
 public class RecipeRepository {
-    MutableLiveData<Recipe[]> recipes;
+
+    private MutableLiveData<Recipe[]> recipes = new MutableLiveData<>();
 
     public LiveData<Recipe[]> getRecipes() {
         new Thread(new Runnable() {
