@@ -18,12 +18,18 @@ import com.example.bakingapp.R;
 
 public class StepsListAdapter extends RecyclerView.Adapter<StepsListAdapter.StepViewHolder> {
     private String[] mStepsNames;
+    final private ListItemClickListener mOnClickListener;
 
-    public StepsListAdapter(String[] mStepsNames) {
+    public StepsListAdapter(String[] mStepsNames, ListItemClickListener listener) {
         this.mStepsNames = mStepsNames;
+        mOnClickListener = listener;
     }
 
-    public class StepViewHolder extends RecyclerView.ViewHolder{
+    interface ListItemClickListener{
+        void onListItemClick(int position);
+    }
+
+    public class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView stepName;
         TextView stepNumber;
@@ -44,6 +50,12 @@ public class StepsListAdapter extends RecyclerView.Adapter<StepsListAdapter.Step
                 stepNumber.setVisibility(View.VISIBLE);
                 stepNumber.setText("Step " + position);
             }
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            mOnClickListener.onListItemClick(getAdapterPosition());
         }
     }
 
