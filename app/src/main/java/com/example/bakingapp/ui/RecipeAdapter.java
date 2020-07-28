@@ -1,4 +1,4 @@
-package com.example.bakingapp;
+package com.example.bakingapp.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,13 +11,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.bakingapp.R;
 import com.example.bakingapp.models.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
-    private Recipe[] mRecipe;
+    interface ListItemClickListener{
+        void onListItemClick(int position);
+    }
 
-    public static class RecipeViewHolder extends RecyclerView.ViewHolder {
+    private Recipe[] mRecipe;
+    final private ListItemClickListener mOnClickListener;
+
+    public RecipeAdapter(ListItemClickListener mOnClickListener) {
+        this.mOnClickListener = mOnClickListener;
+    }
+
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView recipeImage;
         TextView recipeName;
 
@@ -25,6 +35,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             super(itemView);
             recipeImage = itemView.findViewById(R.id.iv_recipe_image);
             recipeName = itemView.findViewById(R.id.tv_recipe_name);
+            itemView.setOnClickListener(this);
         }
 
         private void bind(Recipe recipe){
@@ -35,6 +46,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                 Glide.with(itemView).load(image).into(recipeImage);
             }
             recipeName.setText(name);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            mOnClickListener.onListItemClick(position);
         }
     }
 
