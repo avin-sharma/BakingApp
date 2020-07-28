@@ -4,13 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.Recipe;
 import com.example.bakingapp.models.Step;
 
-public class RecipeDetailsActivity extends AppCompatActivity implements StepsListFragment.StepsListFragmentInterface {
+public class RecipeDetailsActivity extends AppCompatActivity implements StepsListFragment.StepsListFragmentInterface, StepsListAdapter.ListItemClickListener{
 
     private Recipe mRecipe;
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
@@ -39,5 +40,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
             stepNames[i + 1] = steps[i].getShortDescription();
         }
         return stepNames;
+    }
+
+    @Override
+    public void onListItemClick(int position) {
+        Log.d(TAG, "step clicked: " + position);
     }
 }

@@ -17,6 +17,7 @@ public class StepsListFragment extends Fragment {
 
     private RecyclerView mStepListRecyclerView;
     private StepsListFragmentInterface mStepsListFragmentInterface;
+    private StepsListAdapter adapter;
 
     public StepsListFragment() {
         // Required empty public constructor
@@ -30,6 +31,12 @@ public class StepsListFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mStepsListFragmentInterface = (StepsListFragmentInterface) context;
+
+        // Item click listener is implemented in the activity since
+        // all the work is done there including communication with
+        // the step details fragment/activity.
+        adapter = new StepsListAdapter(mStepsListFragmentInterface.getStepsNames(),
+                (StepsListAdapter.ListItemClickListener) context);
     }
 
     @Nullable
@@ -43,7 +50,6 @@ public class StepsListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mStepListRecyclerView = view.findViewById(R.id.rv_steps_list);
-        StepsListAdapter adapter = new StepsListAdapter(mStepsListFragmentInterface.getStepsNames());
         mStepListRecyclerView.setAdapter(adapter);
     }
 

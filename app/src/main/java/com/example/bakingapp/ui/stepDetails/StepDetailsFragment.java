@@ -9,11 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.models.Step;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class StepDetailsFragment extends Fragment {
+
+    public interface GetStepDetails {
+        Step getClickedStep();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
