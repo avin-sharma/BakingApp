@@ -48,7 +48,7 @@ public class StepsListAdapter extends RecyclerView.Adapter<StepsListAdapter.Step
                 stepNumber.setVisibility(View.GONE);
             }else {
                 stepNumber.setVisibility(View.VISIBLE);
-                stepNumber.setText("Step " + position);
+                stepNumber.setText("Step " + (position - 1));
             }
             itemView.setOnClickListener(this);
         }
