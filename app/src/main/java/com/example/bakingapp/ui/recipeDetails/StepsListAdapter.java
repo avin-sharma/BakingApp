@@ -19,6 +19,7 @@ import com.example.bakingapp.R;
 public class StepsListAdapter extends RecyclerView.Adapter<StepsListAdapter.StepViewHolder> {
     private String[] mStepsNames;
     final private ListItemClickListener mOnClickListener;
+    private int selectedPos = RecyclerView.NO_POSITION;
 
     public StepsListAdapter(String[] mStepsNames, ListItemClickListener listener) {
         this.mStepsNames = mStepsNames;
@@ -56,6 +57,9 @@ public class StepsListAdapter extends RecyclerView.Adapter<StepsListAdapter.Step
         @Override
         public void onClick(View view) {
             mOnClickListener.onListItemClick(getAdapterPosition());
+            notifyItemChanged(selectedPos);
+            selectedPos = getAdapterPosition();
+            notifyItemChanged(selectedPos);
         }
     }
 
@@ -71,6 +75,7 @@ public class StepsListAdapter extends RecyclerView.Adapter<StepsListAdapter.Step
     @Override
     public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
         holder.bind(mStepsNames[position], position);
+        holder.itemView.setSelected(position == selectedPos);
     }
 
     @Override

@@ -3,8 +3,9 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="16dp"
-    android:orientation="vertical">
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:background="@drawable/list_item_selector">
     <TextView
         android:id="@+id/tv_step_number"
         android:layout_width="wrap_content"
