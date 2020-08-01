@@ -35,12 +35,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
             public void onChanged(Recipe[] recipes) {
                 adapter.setmRecipe(recipes);
                 mRecipes = recipes;
-
-                if (recipes != null) {
-                    for (Recipe recipe: recipes){
-                        Log.d(TAG, recipe.getName());
-                    }
-                }
             }
         });
     }
