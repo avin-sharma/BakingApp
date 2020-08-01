@@ -68,7 +68,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
             }
             else {
                 // If we click on steps
-                fragment = StepDetailsFragment.newInstance(mSteps[position - 1]);
+                fragment = StepDetailsFragment.newInstance(mSteps[position - 1], mTwoPane);
             }
 
             FragmentManager fragmentManager = getSupportFragmentManager();

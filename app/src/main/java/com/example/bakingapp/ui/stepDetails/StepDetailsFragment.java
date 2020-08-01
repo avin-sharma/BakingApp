@@ -2,6 +2,7 @@ package com.example.bakingapp.ui.stepDetails;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.bakingapp.R;
@@ -40,17 +42,20 @@ public class StepDetailsFragment extends Fragment {
     private Step  mStep;
     public static final String TAG = StepDetailsFragment.class.getSimpleName();
     public static final String STEP_KEY = "step-key";
+    public static final String IS_DUAL_PANE = "dual-pane";
     private TextView mTvDescription;
     private PlayerView mPlayerView;
     private SimpleExoPlayer mPlayer;
+    private boolean mTwoPane;
 
     private boolean playWhenReady = true;
     private int currentWindow = 0;
     private long playbackPosition = 0;
 
-    public static StepDetailsFragment newInstance(Step step){
+    public static StepDetailsFragment newInstance(Step step, boolean dualPane){
         Bundle bundle = new Bundle();
         bundle.putSerializable(STEP_KEY, step);
+        bundle.putBoolean(IS_DUAL_PANE, dualPane);
         StepDetailsFragment fragment = new StepDetailsFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -59,8 +64,6 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mStep = (Step)getArguments().getSerializable(STEP_KEY);
-        Log.d(TAG, mStep.getDescription());
     }
 
     @Override
@@ -73,6 +76,10 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mStep = (Step) getArguments().getSerializable(STEP_KEY);
+        mTwoPane = getArguments().getBoolean(IS_DUAL_PANE);
+        Log.d(TAG, mStep.getDescription());
+
         mTvDescription = view.findViewById(R.id.tv_step_description);
         mTvDescription.setText(mStep.getDescription());
 
@@ -98,12 +105,16 @@ public class StepDetailsFragment extends Fragment {
 
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        int orientation = getResources().getConfiguration().orientation;
+        // If we are on mobile and landscape only then go fullscreen
+        if (!mTwoPane && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
     }
 
     private void initializePlayer() {

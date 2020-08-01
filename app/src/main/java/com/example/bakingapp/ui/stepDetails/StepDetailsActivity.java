@@ -22,7 +22,7 @@ public class StepDetailsActivity extends AppCompatActivity {
                 .getSerializable(RecipeDetailsActivity.STEPS_EXTRA);
 
 
-        Fragment fragment = StepDetailsFragment.newInstance(step);
+        Fragment fragment = StepDetailsFragment.newInstance(step, false);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fl_recipe_details_container, fragment).commit();
