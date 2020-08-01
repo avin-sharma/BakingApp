@@ -61,6 +61,14 @@ public class JsonUtils {
             String description = stepJsonObject.getString("description");
             String videoURL = stepJsonObject.getString("videoURL");
             String thumbnailURL = stepJsonObject.getString("thumbnailURL");
+
+            // Check if videoURL is in thumbnailURL
+            if (videoURL.isEmpty() && !thumbnailURL.isEmpty() && thumbnailURL.substring(thumbnailURL.length() - 4).equals(".mp4")){
+                Log.d("JSONUtils", thumbnailURL);
+                videoURL = thumbnailURL;
+                thumbnailURL = "";
+            }
+
             steps[i] = new Step(id, shortDescription, description, videoURL, thumbnailURL);
         }
         return steps;
