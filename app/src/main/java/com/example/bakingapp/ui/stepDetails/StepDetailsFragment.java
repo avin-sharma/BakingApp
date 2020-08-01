@@ -78,12 +78,15 @@ public class StepDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mStep = (Step) getArguments().getSerializable(STEP_KEY);
         mTwoPane = getArguments().getBoolean(IS_DUAL_PANE);
-        Log.d(TAG, mStep.getDescription());
+
+        Log.d(TAG, mStep.getVideoURL());
 
         mTvDescription = view.findViewById(R.id.tv_step_description);
         mTvDescription.setText(mStep.getDescription());
 
         mPlayerView = view.findViewById(R.id.video_view);
+        if (mStep.getVideoURL().isEmpty()) mPlayerView.setVisibility(View.GONE);
+        else mPlayerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -118,12 +121,14 @@ public class StepDetailsFragment extends Fragment {
     }
 
     private void initializePlayer() {
-        mPlayer = new SimpleExoPlayer.Builder(getContext()).build();
-        mPlayerView.setPlayer(mPlayer);
-        MediaSource mediaSource = buildMediaSource(Uri.parse(mStep.getVideoURL()));
-        mPlayer.setPlayWhenReady(playWhenReady);
-        mPlayer.seekTo(currentWindow, playbackPosition);
-        mPlayer.prepare(mediaSource, false, false);
+        if (mPlayerView.getVisibility() == View.VISIBLE) {
+            mPlayer = new SimpleExoPlayer.Builder(getContext()).build();
+            mPlayerView.setPlayer(mPlayer);
+            MediaSource mediaSource = buildMediaSource(Uri.parse(mStep.getVideoURL()));
+            mPlayer.setPlayWhenReady(playWhenReady);
+            mPlayer.seekTo(currentWindow, playbackPosition);
+            mPlayer.prepare(mediaSource, false, false);
+        }
     }
 
     private MediaSource buildMediaSource(Uri uri) {
