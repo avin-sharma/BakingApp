@@ -1,5 +1,7 @@
 package com.example.bakingapp.ui.recipeDetails;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -46,6 +49,11 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         // find container and if its null we are on a single pane layout
         container = findViewById(R.id.fl_recipe_details_container);
         mTwoPane = container != null;
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -104,17 +112,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         }
     }
 
-//    @Override
-//    public Step getClickedStep() {
-//        if (selectionPosition == 0){
-//            // This should never happen because we launch
-//            // StepDetailsFragment gets launched only for steps
-//            // which means selected position is never 0, we have
-//            // ingredients at 0.
-//            return null;
-//        }
-//
-//        return mSteps[selectionPosition - 1];
-//
-//    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
