@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.bakingapp.R;
@@ -54,6 +56,16 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
             stepNames[i + 1] = mSteps[i].getShortDescription();
         }
         return stepNames;
+    }
+
+    @Override
+    public void selectFirstItemOnStartIfDualPane(RecyclerView recyclerView) {
+        Log.d(TAG, String.valueOf(recyclerView.findViewHolderForAdapterPosition(0) != null));
+        if (mTwoPane) {
+            StepsListAdapter.StepViewHolder view = (StepsListAdapter.StepViewHolder) recyclerView.findViewHolderForAdapterPosition(0);
+            view.itemView.performClick();
+            Log.d(TAG,"Why is this not working?");
+        }
     }
 
     @Override
