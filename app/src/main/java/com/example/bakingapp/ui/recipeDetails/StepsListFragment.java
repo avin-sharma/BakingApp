@@ -25,6 +25,7 @@ public class StepsListFragment extends Fragment {
 
     interface StepsListFragmentInterface {
         String[] getStepsNames();
+        void selectFirstItemOnStartIfDualPane(RecyclerView recyclerView);
     }
 
     @Override
@@ -53,4 +54,9 @@ public class StepsListFragment extends Fragment {
         mStepListRecyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//        mStepsListFragmentInterface.selectFirstItemOnStartIfDualPane(mStepListRecyclerView);
+    }
 }
