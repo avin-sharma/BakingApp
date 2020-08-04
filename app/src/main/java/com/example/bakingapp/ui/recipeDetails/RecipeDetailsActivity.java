@@ -8,7 +8,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,6 +27,8 @@ import com.example.bakingapp.ui.IngredientsDetails.IngredientsDetailsActivity;
 import com.example.bakingapp.ui.IngredientsDetails.IngredientsFragment;
 import com.example.bakingapp.ui.stepDetails.StepDetailsActivity;
 import com.example.bakingapp.ui.stepDetails.StepDetailsFragment;
+import com.example.bakingapp.widget.BakingAppWidgetProvider;
+import com.google.gson.Gson;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsListFragment.StepsListFragmentInterface,
         StepsListAdapter.ListItemClickListener{
@@ -54,6 +60,21 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        // Save last ingredients of the last viewed recipe
+        SharedPreferences sharedPref = this.getSharedPreferences(
+                getString(R.string.preference_last_recipe), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(mIngredients);
+        prefsEditor.putString("Ingredients", json);
+        prefsEditor.apply();
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                new ComponentName(this, BakingAppWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv_ingredients);
     }
 
     @Override
