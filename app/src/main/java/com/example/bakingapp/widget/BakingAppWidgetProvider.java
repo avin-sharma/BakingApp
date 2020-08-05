@@ -1,5 +1,6 @@
 package com.example.bakingapp.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.ui.MainActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -23,6 +25,10 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         // Add the app widget ID to the intent extras.
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        Intent openAppIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openAppIntent, 0);
+
         // Instantiate the RemoteViews object for the app widget layout.
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
         // Set up the RemoteViews object to use a RemoteViews adapter.
@@ -36,9 +42,8 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         // object above.
         rv.setEmptyView(R.id.lv_ingredients, R.id.empty_view);
 
-        //
-        // Do additional processing specific to this app widget...
-        //
+        // Attach onClickListener to the remoteView
+        rv.setOnClickPendingIntent(R.id.tv_app_name, pendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, rv);
     }
