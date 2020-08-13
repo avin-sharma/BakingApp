@@ -100,8 +100,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
     @Override
     public void onListItemClick(int position) {
         Log.d(TAG, "step clicked: " + position);
+        // Handling UI for tablet layout
         if (mTwoPane) {
-            // Handling UI for tablet layout
             Fragment fragment;
             if (position == 0) {
                 // If we click on ingredients

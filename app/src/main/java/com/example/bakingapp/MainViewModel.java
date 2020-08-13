@@ -1,21 +1,19 @@
 package com.example.bakingapp;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 import com.example.bakingapp.models.Recipe;
 
-public class MainViewModel extends AndroidViewModel {
-    private LiveData<Recipe[]> recipes = new RecipeRepository().getRecipes();
+public class MainViewModel extends ViewModel {
+    private LiveData<Recipe[]> mRecipes;
 
-    public MainViewModel(@NonNull Application application) {
-        super(application);
+    public MainViewModel(CountingIdlingResource mIdlingResource) {
+        mRecipes = new RecipeRepository(mIdlingResource).getRecipes();
     }
 
     public LiveData<Recipe[]> getRecipes() {
-        return recipes;
+        return mRecipes;
     }
 }
