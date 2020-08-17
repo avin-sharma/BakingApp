@@ -50,6 +50,8 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     private PlaybackStateCompat.Builder mStateBuilder;
     private Context mContext;
 
+    private FragmentLoadStatus mLoadStatus;
+
     public static StepDetailsFragment newInstance(Step step, boolean dualPane){
         Bundle bundle = new Bundle();
         bundle.putSerializable(STEP_KEY, step);
@@ -59,10 +61,15 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
         return fragment;
     }
 
+    public interface FragmentLoadStatus {
+        void isNowIdle();
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+        mLoadStatus = (FragmentLoadStatus) context;
     }
 
     @Override
@@ -88,6 +95,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
         else mPlayerView.setVisibility(View.VISIBLE);
 
         initializeMediaSession();
+        mLoadStatus.isNowIdle();
     }
 
     @Override

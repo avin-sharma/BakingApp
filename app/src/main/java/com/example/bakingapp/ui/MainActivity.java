@@ -46,6 +46,15 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
         });
     }
 
+
+    @Override
+    public void onListItemClick(int position) {
+        // Start RecipeDetailsActivity
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        intent.putExtra("Recipe", mRecipes[position]);
+        startActivity(intent);
+    }
+
     /**
      * Register idling resource to wait for async calls in UI tests
      */
@@ -55,10 +64,8 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
     }
 
     @Override
-    public void onListItemClick(int position) {
-        // Start RecipeDetailsActivity
-        Intent intent = new Intent(this, RecipeDetailsActivity.class);
-        intent.putExtra("Recipe", mRecipes[position]);
-        startActivity(intent);
+    protected void onStop() {
+        super.onStop();
+        IdlingRegistry.getInstance().unregister(mIdlingResource);
     }
 }

@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -31,7 +33,7 @@ import com.example.bakingapp.widget.BakingAppWidgetProvider;
 import com.google.gson.Gson;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsListFragment.StepsListFragmentInterface,
-        StepsListAdapter.ListItemClickListener{
+        StepsListAdapter.ListItemClickListener, StepDetailsFragment.FragmentLoadStatus, IngredientsFragment.FragmentLoadStatus{
 
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
     private FrameLayout container;
@@ -40,6 +42,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
     private Ingredient[] mIngredients;
     public static final String INGREDIENTS_EXTRA = "ingredients-extra";
     public static final String STEPS_EXTRA = "steps-extra";
+    private CountingIdlingResource mIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
                 new ComponentName(this, BakingAppWidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv_ingredients);
+
+        registerIdlingResource();
     }
 
     @Override
@@ -103,12 +108,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         // Handling UI for tablet layout
         if (mTwoPane) {
             Fragment fragment;
+            mIdlingResource.increment();
+
+            // If we click on ingredients
             if (position == 0) {
-                // If we click on ingredients
                 fragment = IngredientsFragment.newInstance(mIngredients);
             }
+            // If we click on steps
             else {
-                // If we click on steps
                 fragment = StepDetailsFragment.newInstance(mSteps[position - 1], mTwoPane);
             }
 
@@ -142,5 +149,24 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void isNowIdle() {
+        mIdlingResource.decrement();
+    }
+
+    /**
+     * Register idling resource to wait for async calls in UI tests
+     */
+    private void registerIdlingResource() {
+        mIdlingResource = new CountingIdlingResource("MainViewModelCalls");
+        IdlingRegistry.getInstance().register(mIdlingResource);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        IdlingRegistry.getInstance().unregister(mIdlingResource);
     }
 }
