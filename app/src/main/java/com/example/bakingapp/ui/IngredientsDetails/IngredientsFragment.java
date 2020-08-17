@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui.IngredientsDetails;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.Ingredient;
 import com.example.bakingapp.models.Step;
+import com.example.bakingapp.ui.stepDetails.StepDetailsFragment;
 
 public class IngredientsFragment extends Fragment {
 
@@ -22,9 +24,20 @@ public class IngredientsFragment extends Fragment {
     public static final String TAG = IngredientsFragment.class.getSimpleName();
 
     private RecyclerView rvIngredientsList;
+    private FragmentLoadStatus mLoadStatus;
+
+    public interface FragmentLoadStatus {
+        void isNowIdle();
+    }
 
     public IngredientsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mLoadStatus = (FragmentLoadStatus) context;
     }
 
     public static IngredientsFragment newInstance(Ingredient[] ingredients){
@@ -51,5 +64,6 @@ public class IngredientsFragment extends Fragment {
         }
         rvIngredientsList = view.findViewById(R.id.rv_ingredients_list);
         rvIngredientsList.setAdapter(new IngredientsListAdapter(ingredients));
+        mLoadStatus.isNowIdle();
     }
 }
