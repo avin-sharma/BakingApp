@@ -26,6 +26,7 @@ public class StepDetailsActivity extends AppCompatActivity implements StepDetail
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_details);
+        String recipeName = (String) Objects.requireNonNull(getIntent().getExtras()).getString(RecipeDetailsActivity.RECIPE_NAME_EXTRA);
         Step step = (Step) Objects.requireNonNull(getIntent()
                 .getExtras())
                 .getSerializable(RecipeDetailsActivity.STEPS_EXTRA);
@@ -41,6 +42,7 @@ public class StepDetailsActivity extends AppCompatActivity implements StepDetail
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(recipeName);
         }
     }
 

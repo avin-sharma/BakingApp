@@ -38,10 +38,12 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
     private FrameLayout container;
     private boolean mTwoPane;
+    private Recipe mRecipe;
     private Step[] mSteps;
     private Ingredient[] mIngredients;
     public static final String INGREDIENTS_EXTRA = "ingredients-extra";
     public static final String STEPS_EXTRA = "steps-extra";
+    public static final String RECIPE_NAME_EXTRA = "recipe-name-extra";
     private CountingIdlingResource mIdlingResource;
 
     @Override
@@ -50,9 +52,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         // Get recipe clicked in the MainActivity
         // We do this before setContentView because it inflates the fragment
         // which requires steps and ingredients
-        Recipe recipe = (Recipe) getIntent().getSerializableExtra("Recipe");
-        mSteps = recipe.getSteps();
-        mIngredients = recipe.getIngredients();
+        mRecipe = (Recipe) getIntent().getSerializableExtra("Recipe");
+        mSteps = mRecipe.getSteps();
+        mIngredients = mRecipe.getIngredients();
         setContentView(R.layout.activity_recipe_details);
 
         // find container and if its null we are on a single pane layout
@@ -62,6 +64,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(mRecipe.getName());
         }
 
         // Save last ingredients of the last viewed recipe
@@ -136,6 +139,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
                 intent = new Intent(this, StepDetailsActivity.class);
                 intent.putExtra(STEPS_EXTRA, mSteps[position - 1]);
             }
+            intent.putExtra(RECIPE_NAME_EXTRA, mRecipe.getName());
             startActivity(intent);
         }
     }
