@@ -16,6 +16,8 @@ import com.example.bakingapp.R;
 import com.example.bakingapp.models.Ingredient;
 import com.example.bakingapp.ui.recipeDetails.RecipeDetailsActivity;
 
+import java.util.Objects;
+
 public class IngredientsDetailsActivity extends AppCompatActivity implements IngredientsFragment.FragmentLoadStatus {
 
     private CountingIdlingResource mIdlingResource;
@@ -24,6 +26,7 @@ public class IngredientsDetailsActivity extends AppCompatActivity implements Ing
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredients_details);
+        String recipeName = (String) Objects.requireNonNull(getIntent().getExtras()).getString(RecipeDetailsActivity.RECIPE_NAME_EXTRA);
         Ingredient[] ingredients = (Ingredient[]) getIntent()
                 .getExtras()
                 .getSerializable(RecipeDetailsActivity.INGREDIENTS_EXTRA);
@@ -39,6 +42,7 @@ public class IngredientsDetailsActivity extends AppCompatActivity implements Ing
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(recipeName);
         }
     }
 
