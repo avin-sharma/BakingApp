@@ -88,7 +88,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
     @Override
     public String[] getStepsNames() {
         String[] stepNames = new String[mSteps.length + 1];
-        stepNames[0] = "Ingredients";
+        stepNames[0] = getString(R.string.Ingredients);
         for (int i = 0; i < mSteps.length; i++){
             stepNames[i + 1] = mSteps[i].getShortDescription();
         }

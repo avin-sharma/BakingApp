@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">BakingApp</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">BakingApp Widget</string>
     <string name="add_widget">Add widget</string>
     <string name="preference_last_recipe">Last Viewed Recipe</string>
+    <string name="StepNumber">Step %d</string>
+    <string name="Ingredients">Ingredients</string>
 </resources>
