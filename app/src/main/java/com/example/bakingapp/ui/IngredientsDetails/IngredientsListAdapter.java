@@ -33,7 +33,7 @@ public class IngredientsListAdapter extends RecyclerView.Adapter<IngredientsList
 
         private void bind(Ingredient ingredient) {
             tvMeasureAndQuantity.setText(ingredient.getQuantity() + " " + ingredient.getMeasure());
-            tvIngredient.setText(ingredient.getIngredients());
+            tvIngredient.setText(ingredient.getIngredient());
         }
     }
 

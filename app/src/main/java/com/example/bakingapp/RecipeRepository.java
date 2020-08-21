@@ -21,7 +21,7 @@ public class RecipeRepository {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                recipes.postValue(JsonUtils.convertJsonStringToRecipes(NetworkUtils.fetchRecipesJson()));
+                recipes.postValue(JsonUtils.convertJsonStringToRecipesGSON(NetworkUtils.fetchRecipesJson()));
                 mIdlingResource.decrement();
             }
         }).start();

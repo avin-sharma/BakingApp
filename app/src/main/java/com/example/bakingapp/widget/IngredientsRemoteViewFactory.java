@@ -3,7 +3,6 @@ package com.example.bakingapp.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -51,7 +50,7 @@ public class IngredientsRemoteViewFactory implements RemoteViewsService.RemoteVi
         // text based on the position.
         RemoteViews rv = new RemoteViews(mApplicationContext.getPackageName(), R.layout.ingredients_list_item);
         rv.setTextViewText(R.id.tv_quantity_and_measure, mIngredients[i].getQuantity() + mIngredients[i].getMeasure());
-        rv.setTextViewText(R.id.tv_ingredient, mIngredients[i].getIngredients());
+        rv.setTextViewText(R.id.tv_ingredient, mIngredients[i].getIngredient());
         return rv;
     }
 
