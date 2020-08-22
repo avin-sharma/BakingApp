@@ -30,6 +30,7 @@ public class StepsListFragment extends Fragment {
     interface StepsListFragmentInterface {
         String[] getStepsNames();
         int getLastClickedPosition();
+        public void isNowIdle();
     }
 
     @Override
@@ -60,6 +61,7 @@ public class StepsListFragment extends Fragment {
         StepsListAdapter adapter = new StepsListAdapter(mStepsListFragmentInterface.getStepsNames(),
                 (StepsListAdapter.ListItemClickListener) mContext, lastClickPosition);
         mStepListRecyclerView.setAdapter(adapter);
+        mStepsListFragmentInterface.isNowIdle();
     }
 
     @Override

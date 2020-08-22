@@ -45,7 +45,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
     public static final String STEPS_EXTRA = "steps-extra";
     public static final String RECIPE_NAME_EXTRA = "recipe-name-extra";
     private CountingIdlingResource mIdlingResource;
-    private int mLastClickPosition = 0;
+    private int mLastClickPosition = RecyclerView.NO_POSITION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,13 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         mRecipe = (Recipe) getIntent().getSerializableExtra("Recipe");
         mSteps = mRecipe.getSteps();
         mIngredients = mRecipe.getIngredients();
+
+        registerIdlingResource();
+        mIdlingResource.increment();
+        if (savedInstanceState != null) {
+            mIdlingResource.increment();
+        }
+
         setContentView(R.layout.activity_recipe_details);
 
         // find container and if its null we are on a single pane layout
@@ -83,10 +90,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
                 new ComponentName(this, BakingAppWidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv_ingredients);
 
-        registerIdlingResource();
-        if (savedInstanceState != null) {
-            mIdlingResource.increment();
-        }
     }
 
     @Override
