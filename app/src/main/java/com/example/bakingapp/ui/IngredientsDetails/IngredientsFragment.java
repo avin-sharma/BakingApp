@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.Ingredient;
-import com.example.bakingapp.models.Step;
-import com.example.bakingapp.ui.stepDetails.StepDetailsFragment;
 
 public class IngredientsFragment extends Fragment {
 
@@ -60,7 +58,7 @@ public class IngredientsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Ingredient[] ingredients = (Ingredient[]) getArguments().getSerializable(INGREDIENTS_KEY);
         for (int i = 0; i < ingredients.length; i++) {
-            Log.d(TAG, ingredients[i].getIngredients());
+            Log.d(TAG, ingredients[i].getIngredient());
         }
         rvIngredientsList = view.findViewById(R.id.rv_ingredients_list);
         rvIngredientsList.setAdapter(new IngredientsListAdapter(ingredients));

@@ -3,17 +3,17 @@ package com.example.bakingapp.models;
 import java.io.Serializable;
 
 public class Ingredient implements Serializable {
-    private int quantity;
+    private float quantity;
     private String measure;
-    private String ingredients;
+    private String ingredient;
 
-    public Ingredient (int quantity, String measure, String ingredients) {
+    public Ingredient (float quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
-        this.ingredients = ingredients;
+        this.ingredient = ingredient;
     }
 
-    public int getQuantity() {
+    public float getQuantity() {
         return quantity;
     }
 
@@ -21,7 +21,7 @@ public class Ingredient implements Serializable {
         return measure;
     }
 
-    public String getIngredients() {
-        return ingredients;
+    public String getIngredient() {
+        return ingredient;
     }
 }

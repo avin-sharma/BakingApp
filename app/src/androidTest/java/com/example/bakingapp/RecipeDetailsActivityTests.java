@@ -8,6 +8,7 @@ import android.view.ViewParent;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.ActivityTestRule;
 
@@ -27,6 +28,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static org.hamcrest.Matchers.allOf;
@@ -95,8 +97,8 @@ public class RecipeDetailsActivityTests {
                                     0)));
             recyclerView2.perform(actionOnItemAtPosition(1, click()));
 
-            SystemClock.sleep(2000);
-            onView(withId(R.id.tv_step_description)).check(matches(isDisplayed()));
+//            SystemClock.sleep(2000);
+            onView(withId(R.id.tv_step_description)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         }
         else {
             ViewInteraction recyclerView = onView(
