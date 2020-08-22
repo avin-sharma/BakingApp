@@ -10,6 +10,7 @@ import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.idling.CountingIdlingResource;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.bakingapp.R;
@@ -33,16 +34,19 @@ public class StepDetailsActivity extends AppCompatActivity implements StepDetail
 
         registerIdlingResource();
         mIdlingResource.increment();
-
-        Fragment fragment = StepDetailsFragment.newInstance(step, false);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fl_recipe_details_container, fragment).commit();
+        Log.d("StepDetailsActivity", "idling resource incremented---------------------------------");
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(recipeName);
+        }
+
+        if (savedInstanceState == null) {
+            Fragment fragment = StepDetailsFragment.newInstance(step, false);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fl_recipe_details_container, fragment).commit();
         }
     }
 
@@ -72,6 +76,7 @@ public class StepDetailsActivity extends AppCompatActivity implements StepDetail
 
     @Override
     public void isNowIdle() {
+        Log.d("StepDetailsActivity", "idling resource decremented++++++++++++++++++++++++++++++");
         mIdlingResource.decrement();
     }
 }

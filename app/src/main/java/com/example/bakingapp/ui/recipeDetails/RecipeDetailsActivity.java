@@ -45,6 +45,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
     public static final String STEPS_EXTRA = "steps-extra";
     public static final String RECIPE_NAME_EXTRA = "recipe-name-extra";
     private CountingIdlingResource mIdlingResource;
+    private int mLastClickPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv_ingredients);
 
         registerIdlingResource();
+        if (savedInstanceState != null) {
+            mIdlingResource.increment();
+        }
     }
 
     @Override
@@ -96,19 +100,15 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsLis
     }
 
     @Override
-    public void selectFirstItemOnStartIfDualPane(RecyclerView recyclerView) {
-        Log.d(TAG, String.valueOf(recyclerView.findViewHolderForAdapterPosition(0) != null));
-        if (mTwoPane) {
-            StepsListAdapter.StepViewHolder view = (StepsListAdapter.StepViewHolder) recyclerView.findViewHolderForAdapterPosition(0);
-            view.itemView.performClick();
-            Log.d(TAG,"Why is this not working?");
-        }
+    public int getLastClickedPosition() {
+        return mLastClickPosition;
     }
+
 
     @Override
     public void onListItemClick(int position) {
-        Log.d(TAG, "step clicked: " + position);
         // Handling UI for tablet layout
+        mLastClickPosition = position;
         if (mTwoPane) {
             Fragment fragment;
             mIdlingResource.increment();

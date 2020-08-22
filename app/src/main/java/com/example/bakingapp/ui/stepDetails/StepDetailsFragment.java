@@ -3,6 +3,8 @@ package com.example.bakingapp.ui.stepDetails;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,8 +18,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
 import com.example.bakingapp.R;
 import com.example.bakingapp.models.Step;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -34,6 +39,7 @@ import com.google.android.exoplayer2.util.Util;
  */
 public class StepDetailsFragment extends Fragment implements ExoPlayer.EventListener{
 
+    private static final String PLAYBACK_POSITION_KEY = "playbackPosition";
     private Step  mStep;
     public static final String TAG = StepDetailsFragment.class.getSimpleName();
     public static final String STEP_KEY = "step-key";
@@ -41,6 +47,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     private TextView mTvDescription;
     private PlayerView mPlayerView;
     private SimpleExoPlayer mExoPlayer;
+    private ImageView mThumbnail;
     private boolean mTwoPane;
 
     private boolean playWhenReady = true;
@@ -91,11 +98,32 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
         mTvDescription.setText(mStep.getDescription());
 
         mPlayerView = view.findViewById(R.id.video_view);
-        if (mStep.getVideoURL().isEmpty()) mPlayerView.setVisibility(View.GONE);
-        else mPlayerView.setVisibility(View.VISIBLE);
+        mThumbnail = view.findViewById(R.id.iv_step_thumbnail);
+
+        Drawable defaultTextDrawable = TextDrawable.builder()
+                .beginConfig()
+                .height(50)
+                .endConfig()
+                .buildRect(mStep.getShortDescription(), R.color.colorAccent);
+        if (mStep.getVideoURL().isEmpty()){
+            mPlayerView.setVisibility(View.GONE);
+            Glide.with(view)
+                    .load(mStep.getThumbnailURL())
+                    .placeholder(defaultTextDrawable)
+                    .error(defaultTextDrawable)
+                    .into(mThumbnail);
+        }
+        else {
+            mPlayerView.setVisibility(View.VISIBLE);
+            mThumbnail.setVisibility(View.GONE);
+        }
+
+        mLoadStatus.isNowIdle();
+        if (savedInstanceState != null) {
+            playbackPosition = savedInstanceState.getLong(PLAYBACK_POSITION_KEY);
+        }
 
         initializeMediaSession();
-        mLoadStatus.isNowIdle();
     }
 
     @Override
@@ -105,6 +133,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
             initializePlayer();
         }
     }
+
 
     @Override
     public void onResume() {
@@ -171,6 +200,12 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
         if (Util.SDK_INT >= 24) {
             releasePlayer();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(PLAYBACK_POSITION_KEY, playbackPosition);
     }
 
     /**

@@ -19,11 +19,12 @@ import com.example.bakingapp.R;
 public class StepsListAdapter extends RecyclerView.Adapter<StepsListAdapter.StepViewHolder> {
     private String[] mStepsNames;
     final private ListItemClickListener mOnClickListener;
-    private int selectedPos = RecyclerView.NO_POSITION;
+    private int selectedPos;
 
-    public StepsListAdapter(String[] mStepsNames, ListItemClickListener listener) {
+    public StepsListAdapter(String[] mStepsNames, ListItemClickListener listener, int lastClickPosition) {
         this.mStepsNames = mStepsNames;
         mOnClickListener = listener;
+        selectedPos = lastClickPosition;
     }
 
     interface ListItemClickListener{

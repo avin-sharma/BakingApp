@@ -2,6 +2,7 @@ package com.example.bakingapp.ui.recipeDetails;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 
+import java.util.Objects;
+
 public class StepsListFragment extends Fragment {
 
     private RecyclerView mStepListRecyclerView;
     private StepsListFragmentInterface mStepsListFragmentInterface;
     private Context mContext;
+    private static final String LAST_CLICK_POSITION = "lastClickPosition";
 
     public StepsListFragment() {
         // Required empty public constructor
@@ -25,7 +29,7 @@ public class StepsListFragment extends Fragment {
 
     interface StepsListFragmentInterface {
         String[] getStepsNames();
-        void selectFirstItemOnStartIfDualPane(RecyclerView recyclerView);
+        int getLastClickedPosition();
     }
 
     @Override
@@ -45,18 +49,22 @@ public class StepsListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        int lastClickPosition = RecyclerView.NO_POSITION;
+        if (savedInstanceState != null) {
+            lastClickPosition = savedInstanceState.getInt(LAST_CLICK_POSITION);
+        }
         mStepListRecyclerView = view.findViewById(R.id.rv_steps_list);
         // Item click listener is implemented in the activity since
         // all the work is done there including communication with
         // the step details fragment/activity.
         StepsListAdapter adapter = new StepsListAdapter(mStepsListFragmentInterface.getStepsNames(),
-                (StepsListAdapter.ListItemClickListener) mContext);
+                (StepsListAdapter.ListItemClickListener) mContext, lastClickPosition);
         mStepListRecyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-//        mStepsListFragmentInterface.selectFirstItemOnStartIfDualPane(mStepListRecyclerView);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(LAST_CLICK_POSITION, mStepsListFragmentInterface.getLastClickedPosition());
     }
 }
